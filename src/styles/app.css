@@ -1,0 +1,163 @@
+:root {
+    --header-height: 64px;
+    --bg-header: #f5f5f5;
+    --bg-card: #e0e0e0;
+    --btn: #2196f3;
+    --btn-hover: #1976d2;
+    --text: #111;
+    --shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+    --radius: 12px;
+    --gap: 32px;
+    --pad: 32px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color: var(--text);
+}
+
+.header {
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 20px;
+    background: var(--bg-header);
+}
+
+.page {
+    padding-bottom: var(--pad);
+}
+
+.searchRow {
+    display: flex;
+    justify-content: center;
+    margin: 32px 0;
+}
+
+.searchInput {
+    width: 520px;
+    padding: 16px 18px;
+    border-radius: var(--radius);
+    border: none;
+    background: var(--bg-card);
+    font-size: 16px;
+    outline: none;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    margin-bottom: 24px;
+}
+
+.toolbarLeft {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    min-height: 32px;
+}
+
+.toolbarRight {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.iconBtn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 6px;
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.iconBtn:disabled {
+    cursor: not-allowed;
+    opacity: 0.35;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--gap);
+    padding: 0 var(--pad);
+}
+
+.card {
+    position: relative;
+    background: var(--bg-card);
+    padding: 24px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.cardCheckbox {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    transform: scale(1.2);
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 999px;
+    object-fit: cover;
+    margin: 16px auto 12px;
+    display: block;
+    background: #16a085; /* fallback if image slow */
+}
+
+.cardText {
+    margin: 0;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+.cardSub {
+    margin: 6px 0 0;
+    font-weight: 600;
+}
+
+.viewBtn {
+    margin-top: 18px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background: var(--btn);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    min-width: 120px; /* proche visuel */
+}
+
+.viewBtn:hover {
+    background: var(--btn-hover);
+}
+
+.status {
+    padding: 0 var(--pad);
+    margin: 12px 0 0;
+    font-weight: 600;
+}
+
+.error { color: #b00020; }
+
+input[type="checkbox"] { accent-color: var(--btn-hover); }
+
+@media (max-width: 768px) {
+    .searchInput { width: 90%; }
+    .grid { padding: 0 16px; gap: 20px; }
+}
