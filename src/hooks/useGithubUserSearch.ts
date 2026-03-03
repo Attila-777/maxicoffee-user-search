@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import { searchGithubUsers, type GithubApiError } from "../api/githubApi";
 import type { GithubUser } from "../types/github";
 import type { UiUser } from "../types/ui";
@@ -10,6 +10,30 @@ export type SearchState =
     | { status: "EMPTY" }
     | { status: "ERROR"; message: string };
 
+type Action =
+    | { type: "IDLE" }
+    | { type: "LOADING" }
+    | { type: "SUCCESS"; items: UiUser[] }
+    | { type: "EMPTY" }
+    | { type: "ERROR"; message: string };
+
+function reducer(_: SearchState, action: Action): SearchState {
+    switch (action.type) {
+        case "IDLE":
+            return { status: "IDLE" };
+        case "LOADING":
+            return { status: "LOADING" };
+        case "SUCCESS":
+            return { status: "SUCCESS", items: action.items };
+        case "EMPTY":
+            return { status: "EMPTY" };
+        case "ERROR":
+            return { status: "ERROR", message: action.message };
+        default:
+            return { status: "IDLE" };
+    }
+}
+
 function rateLimitMessage(resetAt?: number) {
     if (!resetAt) return "GitHub API rate limit reached. Please try again later.";
     const d = new Date(resetAt);
@@ -19,7 +43,8 @@ function rateLimitMessage(resetAt?: number) {
 function toMessage(e: unknown): string {
     const err = e as Partial<GithubApiError>;
     if (err.kind === "RATE_LIMIT") return rateLimitMessage((err as any).resetAt);
-    if (err.kind === "HTTP") return `GitHub API error (${(err as any).status}). ${(err as any).message ?? ""}`.trim();
+    if (err.kind === "HTTP")
+        return `GitHub API error (${(err as any).status}). ${(err as any).message ?? ""}`.trim();
     return "Unexpected error.";
 }
 
@@ -34,7 +59,7 @@ function mapGithubToUi(users: GithubUser[]): UiUser[] {
 }
 
 export function useGithubUserSearch(query: string) {
-    const [state, setState] = useState<SearchState>({ status: "IDLE" });
+    const [state, dispatch] = useReducer(reducer, { status: "IDLE" } as SearchState);
     const abortRef = useRef<AbortController | null>(null);
 
     useEffect(() => {
@@ -43,7 +68,7 @@ export function useGithubUserSearch(query: string) {
         if (!q) {
             abortRef.current?.abort();
             abortRef.current = null;
-            setState({ status: "IDLE" });
+            dispatch({ type: "IDLE" });
             return;
         }
 
@@ -51,17 +76,17 @@ export function useGithubUserSearch(query: string) {
         const ac = new AbortController();
         abortRef.current = ac;
 
-        setState({ status: "LOADING" });
+        dispatch({ type: "LOADING" });
 
         searchGithubUsers(q, ac.signal)
             .then((res) => {
                 if (ac.signal.aborted) return;
-                if (!res.items?.length) setState({ status: "EMPTY" });
-                else setState({ status: "SUCCESS", items: mapGithubToUi(res.items) });
+                if (!res.items?.length) dispatch({ type: "EMPTY" });
+                else dispatch({ type: "SUCCESS", items: mapGithubToUi(res.items) });
             })
             .catch((e) => {
                 if (ac.signal.aborted) return;
-                setState({ status: "ERROR", message: toMessage(e) });
+                dispatch({ type: "ERROR", message: toMessage(e) });
             });
     }, [query]);
 

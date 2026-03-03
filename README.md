@@ -1,73 +1,114 @@
-# React + TypeScript + Vite
+# GitHub Search – FullstackJS Technical Test
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🚀 Stack
 
-Currently, two official plugins are available:
+- React + TypeScript
+- Vite
+- Vitest + Testing Library
+- ESLint (strict rules enabled)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## ▶️ Run the project
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev
 
-## Expanding the ESLint configuration
+Application will be available at:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+http://localhost:5173
+🧪 Run tests
+npm test
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Tests cover:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Empty results handling
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Select All behavior
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Delete selected items
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+✨ Features
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Live search (no submit button / no Enter key)
+
+Debounced input (350ms)
+
+AbortController to cancel stale requests
+
+Responsive UI based on provided mock
+
+Per-card selection
+
+Select All with indeterminate state
+
+Selected items counter
+
+Front-only actions:
+
+Duplicate
+
+Delete
+
+Bonus: Edit mode (hide selection & actions)
+
+⚙️ Technical Decisions
+useReducer for UI State
+
+Centralized and predictable state transitions.
+Avoids cascading setState inside effects.
+
+Debounce + AbortController
+
+Debounce reduces unnecessary API calls.
+
+AbortController prevents race conditions and stale UI updates.
+
+Selection using Set
+
+Set allows O(1) lookup and clean toggle logic.
+
+Unique UI ID
+
+Each rendered user gets a uiId to prevent React key collisions when duplicating items.
+
+Avatar Fallback Handling
+
+Broken or invalid avatar URLs gracefully display a fallback label inside the avatar circle.
+
+🧩 Edge Cases Handled
+
+No results found
+
+GitHub API rate limit (friendly message displayed)
+
+Fast typing / back-and-forth input
+
+Reset UI actions when search changes
+
+🔮 Possible Improvements
+
+Result caching per query
+
+Pagination / infinite scroll
+
+Accessibility improvements (keyboard navigation)
+
+Skeleton loading state
+
+Memoization optimizations for large lists
+
+📌 Notes
+
+This implementation focuses on:
+
+Clean architecture
+
+Predictable state management
+
+Performance safety
+
+Code readability
+
+Compliance with the provided mock

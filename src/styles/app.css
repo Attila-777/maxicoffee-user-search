@@ -110,16 +110,6 @@ body {
     transform: scale(1.2);
 }
 
-.avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 999px;
-    object-fit: cover;
-    margin: 16px auto 12px;
-    display: block;
-    background: #16a085; /* fallback if image slow */
-}
-
 .cardText {
     margin: 0;
     line-height: 1.2;
@@ -160,4 +150,34 @@ input[type="checkbox"] { accent-color: var(--btn-hover); }
 @media (max-width: 768px) {
     .searchInput { width: 90%; }
     .grid { padding: 0 16px; gap: 20px; }
+}
+
+.avatarWrapper {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #16a085;
+    margin: 16px auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.avatarImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.avatarFallback {
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
 }

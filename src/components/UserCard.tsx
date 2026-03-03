@@ -1,3 +1,5 @@
+import {useEffect, useState} from "react";
+
 export type UiUser = {
     uiId: string;
     githubId: number;
@@ -14,6 +16,30 @@ type Props = {
 };
 
 export function UserCard({ user, editMode, selected, onToggleSelected }: Props) {
+
+    console.log("UserCard user=", user);
+    function Avatar({ url }: { url: string }) {
+        console.log("url "  + url);
+        const [error, setError] = useState(false);
+
+        useEffect(() => setError(false), [url]);
+
+        return (
+            <div className="avatarWrapper">
+                {!error ? (
+                    <img
+                        className="avatarImg"
+                        src={url}
+                        alt=""                 // 👈 empêche l’affichage du texte alt
+                        onError={() => setError(true)}
+                    />
+                ) : (
+                    <span className="avatarFallback">AVATAR_FALLBACK</span>
+                )}
+            </div>
+        );
+    }
+
     return (
         <div className="card" data-testid={`card-${user.uiId}`}>
             {editMode && (
@@ -26,7 +52,7 @@ export function UserCard({ user, editMode, selected, onToggleSelected }: Props) 
                 />
             )}
 
-            <img className="avatar" src={user.avatarUrl} alt={`${user.login} avatar`} />
+            <Avatar url={user.avatarUrl} />
 
             <p className="cardText">ID</p>
             <p className="cardSub">{user.login}</p>
