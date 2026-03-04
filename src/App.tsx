@@ -91,7 +91,7 @@ export default function App() {
         } else if (searchState.status === "ERROR") {
             dispatch({ type: "SEARCH_ERROR" });
         }
-    }, [searchState.status, searchState.status === "SUCCESS" ? searchState.items : null]);
+    }, [searchState]);
 
     const selectedCount = state.selected.size;
     const totalCount = state.items.length;
